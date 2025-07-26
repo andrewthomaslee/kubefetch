@@ -208,17 +208,19 @@ func getStorage(clientset *kubernetes.Clientset) string {
 
 func getKubernetesEndpointPort(clientset *kubernetes.Clientset) int {
 
-	endpoint, err := clientset.CoreV1().Endpoints("default").Get(context.TODO(), "kubernetes", v1.GetOptions{})
+	endpointSlices, err := clientset.DiscoveryV1().EndpointSlices("default").List(context.TODO(), v1.ListOptions{
+		LabelSelector: "kubernetes.io/service-name=kubernetes",
+	})
 	if err != nil {
 		panic(err.Error())
 	}
 
 	var portNumber int
 	// Accessing the ports exposed by the Endpoint
-	for _, subset := range endpoint.Subsets {
-		for _, port := range subset.Ports {
+	for _, endpointSlice := range endpointSlices.Items {
+		for _, port := range endpointSlice.Ports {
 			// Accessing port.Port
-			portNumber = int(port.Port)
+			portNumber = int(*port.Port)
 		}
 	}
 
