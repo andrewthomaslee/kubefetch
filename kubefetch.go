@@ -182,27 +182,22 @@ func getContainerRuntimeInterface(clientset *kubernetes.Clientset) string {
 
 func getStorage(clientset *kubernetes.Clientset) string {
 
-	// Retrieve the CRI information from the node status
+	// Retrieve the list of storage classes
 	storageClassList, err := clientset.StorageV1().StorageClasses().List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
 		panic(err.Error())
 	}
 
-	// Check if "longhorn-system" namespace exists
-	storageUsed := "No Storage detected"
-	for _, storageclass := range storageClassList.Items {
-		if storageclass.Name == "longhorn" {
-			storageUsed = "Longhorn"
-		} else if strings.Contains(storageclass.Name, "ceph") {
-			storageUsed = "Rook/Ceph"
-		} else if strings.Contains(storageclass.Name, "local-path") {
-			storageUsed = "Local Path Provisioner"
-		} else {
-			storageUsed = storageUsed + ""
-		}
+	if len(storageClassList.Items) == 0 {
+		return "No Storage detected"
 	}
 
-	return storageUsed
+	var storageClasses []string
+	for _, storageclass := range storageClassList.Items {
+		storageClasses = append(storageClasses, storageclass.Name)
+	}
+
+	return strings.Join(storageClasses, ", ")
 
 }
 
