@@ -439,6 +439,8 @@ func printArt() {
 	var distro string
 	if strings.Contains(version, "k3s") {
 		distro = "K3s"
+	} else if strings.Contains(version, "rke2") {
+		distro = "RKE2"
 	} else {
 
 		//microk8s usually uses the apiServer port 16443
@@ -500,6 +502,10 @@ func printArt() {
 		red = 249
 		green = 42
 		blue = 32
+	case "RKE2":
+		red = 0
+		green = 117
+		blue = 168
 	default:
 		red = 50
 		green = 108
