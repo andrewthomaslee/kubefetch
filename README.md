@@ -51,15 +51,37 @@ Neofetch for Kubernetes Clusters
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### Installation
+### Usage
 
-###### Nix Flake
+#### Nix Flake
 1. With `nix`
     ```sh
     nix run github:andrewthomaslee/kubefetch
     ```
 
-###### Make
+### Installation
+
+#### Nix Flake
+1. Add repo to `flake.nix`
+    ```nix
+    {
+      inputs = {
+        kubefetch.url = "github:andrewthomaslee/kubefetch";
+        kubefetch.inputs.nixpkgs.follows = "nixpkgs";
+      };
+    }
+    ```
+
+2. Add to `systemPackages`
+    ```nix
+    {
+      environment.systemPackages = [
+        inputs.kubefetch.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
+    }
+    ```
+
+#### Make
 1. With `make`
     Clone the repo
     ```sh
