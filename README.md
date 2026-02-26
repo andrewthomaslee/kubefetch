@@ -9,9 +9,9 @@
     A neofetch-inspired application that displays stats about your Kubernetes cluster.
     <br />
     ·
-    <a href="https://github.com/jkulzer/kubefetch/issues">Report Bug</a>
+    <a href="https://github.com/andrewthomaslee/kubefetch/issues">Report Bug</a>
     ·
-    <a href="https://github.com/jkulzer/kubefetch/issues">Request Feature</a>
+    <a href="https://github.com/andrewthomaslee/kubefetch/issues">Request Feature</a>
   </p>
 </div>
 
@@ -42,10 +42,10 @@ Neofetch for Kubernetes Clusters
 
 <br>
 
-![](https://github.com/jkulzer/kubefetch/blob/main/kubefetch.png?raw=true)
+![](https://github.com/andrewthomaslee/kubefetch/blob/main/kubefetch.png?raw=true)
+![](https://github.com/andrewthomaslee/kubefetch/blob/main/rke2.png?raw=true)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 <!-- GETTING STARTED -->
@@ -53,10 +53,17 @@ Neofetch for Kubernetes Clusters
 
 ### Installation
 
+###### Nix Flake
+1. With `nix`
+    ```sh
+    nix run github:andrewthomaslee/kubefetch
+    ```
+
+###### Make
 1. With `make`
     Clone the repo
     ```sh
-    git clone https://github.com/jkulzer/kubefetch
+    git clone https://github.com/andrewthomaslee/kubefetch
     cd kubefetch
     ```
 
@@ -81,12 +88,14 @@ Neofetch for Kubernetes Clusters
 
 - [x] Auth via kubeconfig
 - [ ] AUR package
+- [ ] Nixpkgs package
+- [x] Nix Flake
 - [ ] More displayed info
-	- [x] CNI used (currently only detection for Cilium, Calico, WeaveNet and Flannel)
-	- [x] CRI used
-	- [x] Storage Solution used
+- [x] CNI used (currently only detection for Cilium, Calico, WeaveNet and Flannel)
+- [x] CRI used
+- [x] Storage Solution used
 
-See the [open issues](https://github.com/jkulzer/kubefetch/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/andrewthomaslee/kubefetch/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -103,7 +112,7 @@ Distributed under the GNU GPL v3 License. See `LICENSE.txt` for more information
 <!-- CONTACT -->
 ## Contact
 
-Project Link: [https://github.com/jkulzer/kubefetch](https://github.com/jkulzer/kubefetch)
+Project Link: [https://github.com/andrewthomaslee/kubefetch](https://github.com/andrewthomaslee/kubefetch)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -113,5 +122,6 @@ Project Link: [https://github.com/jkulzer/kubefetch](https://github.com/jkulzer/
 ## Acknowledgments
 
 * [k8s@home](https://k8s-at-home.com/)
+* [kubefetch](https://github.com/jkulzer/kubefetch)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
