@@ -34,9 +34,12 @@ import (
 //go:embed assets
 var asciiArtFile embed.FS
 
+var kubeconfigFlag string
+
 func main() {
 
 	versionFlag := flag.Bool("version", false, "Print the version")
+	flag.StringVar(&kubeconfigFlag, "kubeconfig", "", "Path to the kubeconfig file")
 	flag.Parse()
 
 	if *versionFlag {
@@ -50,7 +53,14 @@ func main() {
 }
 
 func getKubeconfigPath() string {
-	if path := os.Getenv("KUBECONFIG"); path != "" {
+	var path string
+	if kubeconfigFlag != "" {
+		path = kubeconfigFlag
+	} else if envPath := os.Getenv("KUBECONFIG"); envPath != "" {
+		path = envPath
+	}
+
+	if path != "" {
 		usr, _ := user.Current()
 		homeDir := usr.HomeDir
 		if strings.HasPrefix(path, "~/") {
@@ -70,7 +80,7 @@ func getKubeconfig() (*rest.Config, error) {
 	// Build the client config from the kubeconfig file
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
-		panic("Failed to fetch kubeconfig. Check if your kubeconfig exists at " + kubeconfig)
+		panic("Failed to fetch kubeconfig. Path: " + kubeconfig + " Error: " + err.Error())
 	}
 
 	return config, nil
