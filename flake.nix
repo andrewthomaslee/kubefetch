@@ -1,27 +1,22 @@
 {
   description = "A basic flake with a shell";
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/*";
+  inputs.flake-schemas.url = "https://flakehub.com/f/DeterminateSystems/flake-schemas/0";
 
-  outputs = {
-    nixpkgs,
-    flake-utils,
-    ...
-  }:
-    flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-    in {
-      devShells.default = pkgs.mkShell {
-        packages = with pkgs; [
-          go
-        ];
+  outputs = {nixpkgs, ...}: let
+    system = "x86_64-linux";
+    pkgs = nixpkgs.legacyPackages.${system};
+  in
+    with pkgs; {
+      devShells.${system}.default = mkShell {
+        packages = [go];
       };
 
-      packages.default = pkgs.buildGoModule {
+      packages.${system}.default = buildGoModule {
         name = "kubefetch";
-        version = "0.9.0";
+        version = "0.9.1";
         src = ./.;
         vendorHash = "sha256-qsncOsCxepySJI+rJnzbIGxSWlxMzqShtzcEoJD2UPw=";
       };
-    });
+    };
 }

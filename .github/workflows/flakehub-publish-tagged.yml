@@ -1,4 +1,4 @@
-name: "Publish tags to FlakeHub"
+name: "FlakeHub"
 on:
   push:
     tags:
@@ -6,24 +6,34 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "The existing tag to publish to FlakeHub"
-        type: "string"
+        description: The existing tag to publish to FlakeHub
+        type: string
         required: true
 jobs:
-  flakehub-publish:
-    runs-on: "ubuntu-latest"
+  flakehub:
+    runs-on: ubuntu-latest
     permissions:
-      id-token: "write"
-      contents: "read"
+      id-token: write
+      contents: read
     steps:
-      - uses: "actions/checkout@v6"
+      - uses: actions/checkout@v6
         with:
           persist-credentials: false
-          ref: "${{ (inputs.tag != null) && format('refs/tags/{0}', inputs.tag) || '' }}"
-      - uses: "DeterminateSystems/determinate-nix-action@v3"
-      - uses: "DeterminateSystems/flakehub-push@main"
+          ref: ${{ (inputs.tag != null) && format('refs/tags/{0}', inputs.tag) || '' }}
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - uses: DeterminateSystems/flakehub-cache-action@main
+      - uses: DeterminateSystems/flake-checker-action@main
+      - uses: DeterminateSystems/update-flake-lock@main
         with:
-          visibility: "public"
-          name: "andrewthomaslee/kubefetch"
-          tag: "${{ inputs.tag }}"
+          pr-title: "Update flake.lock"
+          pr-labels: |
+            dependencies
+            automated
+      - run: nix flake check
+      - run: nix build
+      - uses: DeterminateSystems/flakehub-push@main
+        with:
+          visibility: public
+          name: andrewthomaslee/kubefetch
+          tag: ${{ inputs.tag }}
           include-output-paths: true
