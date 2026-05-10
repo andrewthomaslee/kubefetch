@@ -40,7 +40,7 @@ func main() {
 	flag.Parse()
 
 	if *versionFlag {
-		fmt.Println("0.9.1")
+		fmt.Println("0.9.2")
 		return
 	} else {
 

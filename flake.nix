@@ -14,7 +14,7 @@
 
       packages.${system}.default = buildGoModule {
         name = "kubefetch";
-        version = "0.9.1";
+        version = "0.9.2";
         src = ./.;
         vendorHash = "sha256-qsncOsCxepySJI+rJnzbIGxSWlxMzqShtzcEoJD2UPw=";
       };
