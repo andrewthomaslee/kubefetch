@@ -4,9 +4,6 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"os"
-	"os/user"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -52,35 +49,30 @@ func main() {
 	}
 }
 
-func getKubeconfigPath() string {
-	var path string
-	if kubeconfigFlag != "" {
-		path = kubeconfigFlag
-	} else if envPath := os.Getenv("KUBECONFIG"); envPath != "" {
-		path = envPath
-	}
-
-	if path != "" {
-		usr, _ := user.Current()
-		homeDir := usr.HomeDir
-		if strings.HasPrefix(path, "~/") {
-			path = filepath.Join(homeDir, path[2:])
-		}
-
-		return path
-	}
-
-	return filepath.Join(os.Getenv("HOME"), ".kube", "config")
-}
-
 func getKubeconfig() (*rest.Config, error) {
-	// Get the path to the kubeconfig file
-	kubeconfig := getKubeconfigPath()
+	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
+	if kubeconfigFlag != "" {
+		loadingRules.ExplicitPath = kubeconfigFlag
+	}
 
-	// Build the client config from the kubeconfig file
-	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
+	configOverrides := &clientcmd.ConfigOverrides{}
+	kubeConfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loadingRules, configOverrides)
+
+	// Fallback to first available context if current context is missing
+	rawConfig, err := kubeConfig.RawConfig()
+	if err == nil {
+		if _, ok := rawConfig.Contexts[rawConfig.CurrentContext]; !ok && len(rawConfig.Contexts) > 0 {
+			for k := range rawConfig.Contexts {
+				configOverrides.CurrentContext = k
+				break
+			}
+			kubeConfig = clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loadingRules, configOverrides)
+		}
+	}
+
+	config, err := kubeConfig.ClientConfig()
 	if err != nil {
-		panic("Failed to fetch kubeconfig. Path: " + kubeconfig + " Error: " + err.Error())
+		panic("Failed to fetch kubeconfig. Error: " + err.Error())
 	}
 
 	return config, nil
