@@ -47,8 +47,12 @@
 
 <br>
 
-![](docs/assets/k3s.png?raw=true)
+#### Docker CLI
+![](docs/assets/kubefetch-docker-cli.png?raw=true)
+#### Binary
 ![](docs/assets/rke2.png?raw=true)
+#### Nix Flake
+![](docs/assets/k3s.png?raw=true)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -58,26 +62,20 @@
 
 ### Usage
 
-#### Run
-```console
-nix run "https://flakehub.com/f/andrewthomaslee/kubefetch/*" -- --help
-```
-
 #### Docker
-Run it with a mounted kubeconfig directory:
-```console
-docker run --rm \
-  -e KUBECONFIG=/kubeconfig/config \
-  -v "$HOME/.kube:/kubeconfig:ro" \
-  ghcr.io/andrewthomaslee/kubefetch
-```
-
 Run it with a single kubeconfig file:
 ```console
 docker run --rm \
-  -v "$PWD/.secrets/kubeconfig/config.yaml:/kubeconfig/config.yaml:ro" \
-  ghcr.io/andrewthomaslee/kubefetch -kubeconfig /kubeconfig/config.yaml
+  -v "$KUBECONFIG:/config.yaml" \
+  ghcr.io/andrewthomaslee/kubefetch -kubeconfig /config.yaml
 ```
+
+#### Nix Flake
+Auto uses $KUBECONFIG if already set
+```console
+nix run "https://flakehub.com/f/andrewthomaslee/kubefetch/*"
+```
+
 
 #### Installation
 
