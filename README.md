@@ -64,10 +64,9 @@
 
 #### Docker
 Run it with a single kubeconfig file:
+Use `--network host` for VPNs like Cloudflare Warp
 ```console
-docker run --rm \
-  -v "$KUBECONFIG:/config.yaml" \
-  ghcr.io/andrewthomaslee/kubefetch -kubeconfig /config.yaml
+docker run --network host -v "$KUBECONFIG:/config.yaml" ghcr.io/andrewthomaslee/kubefetch -kubeconfig /config.yaml
 ```
 
 #### Nix Flake
