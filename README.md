@@ -91,6 +91,22 @@ nix run "https://flakehub.com/f/andrewthomaslee/kubefetch/*" -- --help
   }
   ```
 
+##### OCI Container
+The flake also exposes an `oci-kubefetch` output with the binary in a minimal OCI image, for use with the Docker CLI or in OCI environments like Kubernetes.
+
+```console
+nix build "https://flakehub.com/f/andrewthomaslee/kubefetch/*"#oci-kubefetch
+docker load < result
+```
+
+Run it with a mounted kubeconfig:
+```console
+docker run --rm \
+  -e KUBECONFIG=/kubeconfig/config \
+  -v "$HOME/.kube:/kubeconfig:ro" \
+  kubefetch:0.9.2
+```
+
 #### Make
 1. With `make`
   Clone the repo

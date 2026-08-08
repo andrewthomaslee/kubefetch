@@ -1,0 +1,36 @@
+name: Release
+
+permissions:
+  id-token: write
+  contents: write
+  packages: write
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pre-flight:
+    uses: ./.github/workflows/_flake-check.yml
+
+  tag:
+    needs: pre-flight
+    uses: ./.github/workflows/_tagged-release.yml
+    secrets: inherit
+
+  artifacts:
+    needs: pre-flight
+    uses: ./.github/workflows/_build-artifacts.yml
+
+  oci:
+    needs: tag
+    uses: ./.github/workflows/_oci-artifacts.yml
+    with:
+      push: true
+      tag: ${{ needs.tag.outputs.tag }}
+    secrets: inherit
+
+  flakehub:
+    needs: [artifacts, oci]
+    uses: ./.github/workflows/_flakehub.yml

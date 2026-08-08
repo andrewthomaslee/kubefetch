@@ -194,12 +194,17 @@ func getStorage(clientset *kubernetes.Clientset) string {
 		return "No Storage detected"
 	}
 
-	var storageClasses []string
+	// collect a unique list of the provisioners used by the storage classes
+	var provisioners []string
+	seenProvisioners := map[string]bool{}
 	for _, storageclass := range storageClassList.Items {
-		storageClasses = append(storageClasses, storageclass.Name)
+		if !seenProvisioners[storageclass.Provisioner] {
+			seenProvisioners[storageclass.Provisioner] = true
+			provisioners = append(provisioners, storageclass.Provisioner)
+		}
 	}
 
-	return strings.Join(storageClasses, ", ")
+	return strings.Join(provisioners, ", ")
 
 }
 
