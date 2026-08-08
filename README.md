@@ -5,13 +5,13 @@
 
 <p align="center">
   <a href="https://github.com/andrewthomaslee/kubefetch/releases"><img src="https://img.shields.io/github/v/release/andrewthomaslee/kubefetch?include_prereleases&style=for-the-badge" alt="Latest Release"></a>
-  <a href="https://github.com/andrewthomaslee/kubefetch/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/andrewthomaslee/kubefetch/ci.yml?style=for-the-badge" alt="CI Status"></a>
+  <a href="https://github.com/andrewthomaslee/kubefetch/actions/workflows/release.yml"><img src="https://img.shields.io/github/actions/workflow/status/andrewthomaslee/kubefetch/release.yml?style=for-the-badge" alt="CI Status"></a>
   <a href="https://github.com/andrewthomaslee/kubefetch/blob/main/LICENSE"><img src="https://img.shields.io/github/license/andrewthomaslee/kubefetch?style=for-the-badge&color=blue" alt="License"></a>
 </p>
 
 <p align="center">
   <a href="https://github.com/andrewthomaslee/kubefetch"><img src="https://img.shields.io/badge/github-repo-24292e?logo=github&style=for-the-badge" alt="GitHub Repo"></a>
-  <a href="https://flakehub.com/flake/andrewthomaslee/kubefetch?view=usage"><img src="https://img.shields.io/badge/flakehub-repo-purple?style=for-the-badge" alt="FlakeHub Repo"></a>
+  <a href="https://flakehub.com/flake/andrewthomaslee/kubefetch"><img src="https://img.shields.io/endpoint?url=https://flakehub.com/f/andrewthomaslee/kubefetch/badge&style=for-the-badge" alt="FlakeHub"></a>
 </p>
 
 
