@@ -68,13 +68,23 @@ nix flake show "https://flakehub.com/f/andrewthomaslee/kubefetch/*"
 nix run "https://flakehub.com/f/andrewthomaslee/kubefetch/*" -- --help
 ```
 
+#### Docker
+Run it with a mounted kubeconfig:
+```console
+docker run --rm \
+  -e KUBECONFIG=/kubeconfig/config \
+  -v "$HOME/.kube:/kubeconfig:ro" \
+  kubefetch:latest
+```
+
+
 #### Installation
 
 ##### Nix Flake
 1. Add repo to `flake.nix`
   ```nix
   {
-    inputs.kubefetch.url = "https://flakehub.com/f/andrewthomaslee/kubefetch/0.9.1";
+    inputs.kubefetch.url = "https://flakehub.com/f/andrewthomaslee/kubefetch/0.9.*";
 
     outputs = { self, kubefetch }: {
       # Use in your outputs
@@ -104,7 +114,7 @@ Run it with a mounted kubeconfig:
 docker run --rm \
   -e KUBECONFIG=/kubeconfig/config \
   -v "$HOME/.kube:/kubeconfig:ro" \
-  kubefetch:0.9.2
+  kubefetch:latest
 ```
 
 #### Make
