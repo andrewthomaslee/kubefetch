@@ -58,25 +58,26 @@
 
 ### Usage
 
-#### Show
-```console
-nix flake show "https://flakehub.com/f/andrewthomaslee/kubefetch/*"
-```
-
 #### Run
 ```console
 nix run "https://flakehub.com/f/andrewthomaslee/kubefetch/*" -- --help
 ```
 
 #### Docker
-Run it with a mounted kubeconfig:
+Run it with a mounted kubeconfig directory:
 ```console
 docker run --rm \
   -e KUBECONFIG=/kubeconfig/config \
   -v "$HOME/.kube:/kubeconfig:ro" \
-  kubefetch:latest
+  ghcr.io/andrewthomaslee/kubefetch
 ```
 
+Run it with a single kubeconfig file:
+```console
+docker run --rm \
+  -v "$PWD/.secrets/kubeconfig/config.yaml:/kubeconfig/config.yaml:ro" \
+  ghcr.io/andrewthomaslee/kubefetch -kubeconfig /kubeconfig/config.yaml
+```
 
 #### Installation
 
@@ -109,14 +110,6 @@ nix build "https://flakehub.com/f/andrewthomaslee/kubefetch/*"#oci-kubefetch
 docker load < result
 ```
 
-Run it with a mounted kubeconfig:
-```console
-docker run --rm \
-  -e KUBECONFIG=/kubeconfig/config \
-  -v "$HOME/.kube:/kubeconfig:ro" \
-  kubefetch:latest
-```
-
 #### Make
 1. With `make`
   Clone the repo
@@ -143,14 +136,18 @@ docker run --rm \
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] Auth via kubeconfig
-- [ ] AUR package
-- [ ] Nixpkgs package
+- [x] Rolling SemVer Releases
+- [x] OCI Artifact
+- [x] Binary Cache ( FlakeHub )
 - [x] Nix Flake
-- [ ] More displayed info
+- [x] Auth via kubeconfig
 - [x] CNI used (currently only detection for Cilium, Calico, WeaveNet and Flannel)
 - [x] CRI used
-- [x] Storage Solution used
+- [x] Storage Solutions used
+- [ ] More displayed info
+- [ ] AUR package
+- [ ] Nixpkgs package
+
 
 
 ### Feel free to open an issue if your Kubernetes distro or some other aspect does not get recognized!
