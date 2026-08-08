@@ -33,6 +33,10 @@ var asciiArtFile embed.FS
 
 var kubeconfigFlag string
 
+// version is set at build time via -ldflags "-X main.version=...".
+// The flake sets it from the git commit count (see flake.nix).
+var version = "0.9.0-dev"
+
 func main() {
 
 	versionFlag := flag.Bool("version", false, "Print the version")
@@ -40,7 +44,7 @@ func main() {
 	flag.Parse()
 
 	if *versionFlag {
-		fmt.Println("0.9.2")
+		fmt.Println(version)
 		return
 	} else {
 
